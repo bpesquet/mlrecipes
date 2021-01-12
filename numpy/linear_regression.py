@@ -64,12 +64,14 @@ def main():
 
     num_samples = x_train.shape[0]
 
-    # Add x0 = 1 to each sample
-    X = np.c_[np.ones((num_samples, 1)), x_train]
-    assert X.shape == (num_samples, input_size + 1)
+    # Add x0 = 1 to each sample for bias weight
+    x_train_const = np.c_[np.ones((num_samples, 1)), x_train]
+    assert x_train_const.shape == (num_samples, input_size + 1)
 
     # Set weights (including bias term)
-    weights_normal = np.linalg.inv(X.T.dot(X)).dot(X.T).dot(y_train)
+    weights_normal = (
+        np.linalg.inv(x_train_const.T @ x_train_const) @ x_train_const.T @ y_train
+    )
     assert weights_normal.shape == (input_size + 1, 1)
 
     # Init weights (including bias term)
@@ -80,24 +82,31 @@ def main():
 
     # Training loop
     for epoch in range(num_epochs):
+        # Randomly select one data sample
+        sample_index = np.random.randint(num_samples)
+        x_sample = x_train_const[[sample_index]]
+        assert x_sample.shape == (1, input_size + 1)
+        y_sample = y_train[[sample_index]]
+        assert y_sample.shape == (1, 1)
+
         # Gradient computation
-        gradients = 2 / num_samples * X.T.dot(X.dot(weights_sgd) - y_train)
+        gradients = 2 * x_sample.T @ (x_sample @ weights_sgd - y_sample)
+        assert gradients.shape == (input_size + 1, 1)
 
         # Weights update
         weights_sgd -= learning_rate * gradients
 
         if (epoch + 1) % 5 == 0:
-            epoch_loss = mean_squared_error(y_train, X @ weights_sgd)
+            epoch_loss = mean_squared_error(y_train, x_train_const @ weights_sgd)
             print(f"Epoch [{epoch + 1}/{num_epochs}], Loss: {epoch_loss:.5f}")
 
     # Plot data and predictions
     plt.plot(x_train, y_train, "ro", label="Data")
     for name, weights in model_list.items():
-        y_pred = X @ weights
+        y_pred = x_train_const @ weights
         final_loss = mean_squared_error(y_train, y_pred)
         print(f"Final loss for {name}: {final_loss:.5f}")
         plt.plot(x_train, y_pred, label=name)
-    # plt.plot(x_train, y_pred[:, 1], label="SGD")
     plt.title("Linear Regression with NumPy")
     plt.legend()
     plt.show()
