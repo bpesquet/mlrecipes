@@ -9,7 +9,7 @@ Minimalist implementations of various Machine Learning algorithms.
 
 ### Linear Regression
 
-- [PyTorch](pytorch/linear_regression.py) | [Keras](keras/linear_regression.py)
+- [PyTorch](pytorch/linear_regression.py) | [Keras](keras/linear_regression.py) | [scikit-learn](scikit-learn/linear_regression.py)
 
 ## Development notes
 
