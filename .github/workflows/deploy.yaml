@@ -7,11 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up latest minor release of Python 3
+      - name: Set up Python 3
         uses: actions/setup-python@v2
         with:
           # Semantic version range syntax or exact version of a Python version
-          python-version: "3.x"
+          # Use "3.x" for latest minor version of Python 3
+          python-version: "3.8"
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
       - name: Install dependencies
