@@ -3,9 +3,9 @@ Linear regression with scikit-learn.
 """
 
 import matplotlib.pyplot as plt
-import numpy as np
 import sklearn
 from sklearn import linear_model, metrics
+import numpy as np
 
 print(f"scikit-learn version: {sklearn.__version__}")
 
