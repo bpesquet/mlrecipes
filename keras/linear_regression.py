@@ -1,5 +1,5 @@
 """
-Linear regression with Keras, using the Sequential API.
+Linear regression with Keras.
 """
 
 import matplotlib.pyplot as plt
