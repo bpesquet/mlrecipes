@@ -3,13 +3,13 @@
 
 # Machine Learning recipes
 
-Minimalist implementations of various Machine Learning algorithms.
+Minimalist, self-contained implementations of various Machine Learning algorithms, using the simplest possible dataset for each task.
 
 ## Table of contents
 
 ### Linear Regression
 
-- [PyTorch](pytorch/linear_regression.py) | [Keras](keras/linear_regression.py) | [scikit-learn](scikit-learn/linear_regression.py)
+- [PyTorch](pytorch/linear_regression.py) | [Keras](keras/linear_regression.py) | [scikit-learn](scikit-learn/linear_regression.py) | [NumPy](numpy/linear_regression.py)
 
 ## Development notes
 
