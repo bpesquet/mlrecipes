@@ -44,21 +44,21 @@ def main():
 
     y_train = np.array(
         [
-            1.7,
-            2.76,
-            2.09,
-            3.19,
-            1.694,
-            1.573,
-            3.366,
-            2.596,
-            2.53,
-            1.221,
-            2.827,
-            3.465,
-            1.65,
-            2.904,
-            1.3,
+            [1.7],
+            [2.76],
+            [2.09],
+            [3.19],
+            [1.694],
+            [1.573],
+            [3.366],
+            [2.596],
+            [2.53],
+            [1.221],
+            [2.827],
+            [3.465],
+            [1.65],
+            [2.904],
+            [1.3],
         ]
     )
 
@@ -68,26 +68,36 @@ def main():
     X = np.c_[np.ones((num_samples, 1)), x_train]
     assert X.shape == (num_samples, input_size + 1)
 
+    # Set weights (including bias term)
+    weights_normal = np.linalg.inv(X.T.dot(X)).dot(X.T).dot(y_train)
+    assert weights_normal.shape == (input_size + 1, 1)
+
     # Init weights (including bias term)
-    weights_gd = np.random.randn(input_size + 1, 1)
-    assert weights_gd.shape == (input_size + 1, 1)
+    weights_sgd = np.random.randn(input_size + 1, 1)
+    assert weights_sgd.shape == (input_size + 1, 1)
+
+    model_list = {"Normal Equation": weights_normal, "SGD": weights_sgd}
 
     # Training loop
     for epoch in range(num_epochs):
         # Gradient computation
-        gradients = 2 / num_samples * X.T @ (X @ weights_gd - y_train)
+        gradients = 2 / num_samples * X.T.dot(X.dot(weights_sgd) - y_train)
 
         # Weights update
-        weights_gd = weights_gd - learning_rate * gradients
+        weights_sgd -= learning_rate * gradients
 
         if (epoch + 1) % 5 == 0:
-            epoch_loss = mean_squared_error(y_train, X @ weights_gd)
+            epoch_loss = mean_squared_error(y_train, X @ weights_sgd)
             print(f"Epoch [{epoch + 1}/{num_epochs}], Loss: {epoch_loss:.5f}")
 
     # Plot data and predictions
-    y_pred = X @ weights_gd
     plt.plot(x_train, y_train, "ro", label="Data")
-    plt.plot(x_train, y_pred[:, 1], label="Batch GD")
+    for name, weights in model_list.items():
+        y_pred = X @ weights
+        final_loss = mean_squared_error(y_train, y_pred)
+        print(f"Final loss for {name}: {final_loss:.5f}")
+        plt.plot(x_train, y_pred, label=name)
+    # plt.plot(x_train, y_pred[:, 1], label="SGD")
     plt.title("Linear Regression with NumPy")
     plt.legend()
     plt.show()
