@@ -3,6 +3,7 @@ matplotlib
 torch
 torchvision
 tensorflow
+scikit-learn
 
 # Development dependencies
 pylint
