@@ -1,6 +1,6 @@
 # Third-party dependencies
 matplotlib
-pytorch
+torch
 torchvision
 
 # Development dependencies
