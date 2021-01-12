@@ -11,6 +11,33 @@ print(f"Keras version: {tf.keras.__version__}")
 print("GPU found :)" if tf.config.list_physical_devices("GPU") else "No GPU :(")
 
 
+def train(model, x_train, y_train, num_epochs, learning_rate):
+    "Train e Keras model"
+
+    model.summary()
+
+    # Training configuration
+    model.compile(
+        optimizer=keras.optimizers.SGD(learning_rate=learning_rate),
+        loss="mean_squared_error",
+    )
+
+    # Training loop
+    history = model.fit(x_train, y_train, epochs=num_epochs, verbose=0)
+    for epoch in range(num_epochs):
+        if (epoch + 1) % 5 == 0:
+            epoch_loss = history.history["loss"][epoch]
+            print(f"Epoch [{epoch + 1}/{num_epochs}], Loss: {epoch_loss:.5f}")
+
+    # Plot data and predictions
+    y_pred = model.predict(x_train)
+    plt.plot(x_train, y_train, "ro", label="Data")
+    plt.plot(x_train, y_pred, label="Prediction")
+    plt.title(f"Linear Regression with Keras ({model.name})")
+    plt.legend()
+    plt.show()
+
+
 def main():
     """Main function"""
 
@@ -61,42 +88,25 @@ def main():
         ]
     )
 
-    # Linear regression model
+    # Linear regression models
+
     # Using the Sequential API
-    model = keras.Sequential(
+    model_sequential = keras.Sequential(
         [
             keras.Input(shape=(input_size,)),
             keras.layers.Dense(units=output_size),
         ],
-        name="linear_regression",
+        name="lr_sequential",
     )
+
     # Using the Functional API
-    # inputs = keras.Input(shape=(input_size,))
-    # outputs = keras.layers.Dense(units=output_size)(inputs)
-    # model = keras.Model(inputs=inputs, outputs=outputs, name="linear_regression")
+    inputs = keras.Input(shape=(input_size,))
+    outputs = keras.layers.Dense(units=output_size)(inputs)
+    model_functional = keras.Model(inputs=inputs, outputs=outputs, name="lr_functional")
 
-    model.summary()
-
-    # Training configuration
-    model.compile(
-        optimizer=keras.optimizers.SGD(learning_rate=learning_rate),
-        loss="mean_squared_error",
-    )
-
-    # Training loop
-    history = model.fit(x_train, y_train, epochs=num_epochs, verbose=0)
-    for epoch in range(num_epochs):
-        if (epoch + 1) % 5 == 0:
-            epoch_loss = history.history["loss"][epoch]
-            print(f"Epoch [{epoch + 1}/{num_epochs}], Loss: {epoch_loss:.5f}")
-
-    # Plot data and predictions
-    y_pred = model.predict(x_train)
-    plt.plot(x_train, y_train, "ro", label="Data")
-    plt.plot(x_train, y_pred, label="Prediction")
-    plt.title("Linear Regression with Keras")
-    plt.legend()
-    plt.show()
+    # Train both models
+    for model in [model_sequential, model_functional]:
+        train(model, x_train, y_train, num_epochs, learning_rate)
 
 
 if __name__ == "__main__":

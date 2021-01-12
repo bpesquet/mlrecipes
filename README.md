@@ -23,5 +23,5 @@ This project uses the following tools:
 Run the following command in project root folder to check the codebase.
 
 ```bash
-> pylint **/*.py  # linting
+> pylint -d duplicate-code **/*.py  # linting
 ```

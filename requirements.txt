@@ -2,6 +2,7 @@
 matplotlib
 torch
 torchvision
+tensorflow
 
 # Development dependencies
 pylint
