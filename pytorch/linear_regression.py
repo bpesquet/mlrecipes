@@ -78,7 +78,7 @@ def main():
     # Linear regression model
     model = nn.Linear(input_size, output_size).to(device)
 
-    # Loss and optimizer
+    # Training configuration
     criterion = nn.MSELoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
@@ -96,7 +96,7 @@ def main():
         if (epoch + 1) % 5 == 0:
             print(f"Epoch [{epoch + 1}/{num_epochs}], Loss: {loss.item():.5f}")
 
-    # Plot the graph
+    # Plot data and predictions
     with torch.no_grad():
         y_pred = model(x_train)
         plt.plot(x_train.cpu(), y_train.cpu(), "ro", label="Data")

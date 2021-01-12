@@ -1,4 +1,4 @@
-[![Build status](https://github.com/bpesquet/mlrecipes/workflows/build/badge.svg)](actions)
+[![Build status](https://github.com/bpesquet/mlrecipes/workflows/build/badge.svg)](https://github.com/bpesquet/mlrecipes/actions)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 # Machine Learning recipes
@@ -9,7 +9,7 @@ Minimalist implementations of various Machine Learning algorithms.
 
 ### Linear Regression
 
-- [PyTorch](pytorch/linear_regression.py)
+- [PyTorch](pytorch/linear_regression.py) | [Keras](keras/linear_regression.py)
 
 ## Development notes
 
@@ -23,5 +23,5 @@ This project uses the following tools:
 Run the following command in project root folder to check the codebase.
 
 ```bash
-> python -m pylint pytorch  # linting
+> pylint **/*.py  # linting
 ```
